@@ -1,29 +1,30 @@
 version: 0.2
 
+env:
+ parameter-store:
+    DOCKER_USERNAME: username
+    DOCKER_PASSWORD: password
 
 phases:
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
-      - aws --version
-      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 484912964803.dkr.ecr.us-east-1.amazonaws.com
-      - REPOSITORY_URI=484912964803.dkr.ecr.us-east-1.amazonaws.com/climate
-      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - docker pull node:14
+      - echo "Sucess docker login && pull node"
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 871724687805.dkr.ecr.ap-south-1.amazonaws.com
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - echo "sucess login"
+      - docker build -t weather .
+      - echo "Happly build the dockerfile"
+      - docker tag weather:latest 871724687805.dkr.ecr.ap-south-1.amazonaws.com/weather:latest
+      - ls -la
   post_build:
-    commands:
-      - echo Build completed on `date`
-      - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - echo Writing image definitions file...
-      - printf '[{"name":"climate","imageUri":"%s"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
-      - cat imagedefinitions.json 
+     commands:
+       - echo "Enter post_build"
+       - echo build start on  `date`
+       - docker push 871724687805.dkr.ecr.ap-south-1.amazonaws.com/weather:latest
+       - echo Writing image definition file..
+       - printf '[{"name":"projectk","imageUri":"871724687805.dkr.ecr.ap-south-1.amazonaws.com/weather:latest"}]' > imagedefinitions.json
 artifacts:
-    files: imagedefinitions.json
+     files: imagedefinitions.json
