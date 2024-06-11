@@ -23,7 +23,7 @@ router.post('/', function(req, res, next) {
         console.error('No weather data was avalable for ' + city + '.');
         res.render('index', {weather: null, error: 'Error, please try again!'});
       } else {
-        let weatherText = `It's ${weather.main.temp} degrees in ${weather.name}!`;
+        let weatherText = `It's ${weather.main.temp} Fahrenheit in ${weather.name}!`;
         console.log("Found weather data for " + city + '.');
         res.render('index', {weather: weatherText, error: null});
       }
