@@ -15,16 +15,16 @@ phases:
   build:
     commands:
       - echo "sucess login"
-      - docker build -t node .
+      - docker build -t node:1 .
       - echo "Happly build the dockerfile"
-      - docker tag node:latest 871724687805.dkr.ecr.ap-northeast-3.amazonaws.com/node:latest
+      - docker tag node:1 871724687805.dkr.ecr.ap-northeast-3.amazonaws.com/node:1
       - ls -la
   post_build:
      commands:
        - echo "Enter post_build"
        - echo build start on  `date`
-       - docker push 871724687805.dkr.ecr.ap-northeast-3.amazonaws.com/node:latest
+       - docker push 871724687805.dkr.ecr.ap-northeast-3.amazonaws.com/node:1
        - echo Writing image definition file..
-       - printf '[{"name":"projectk","imageUri":"871724687805.dkr.ecr.ap-northeast-3.amazonaws.com/node:latest"}]' > imagedefinitions.json
+       - printf '[{"name":"projectk","imageUri":"871724687805.dkr.ecr.ap-northeast-3.amazonaws.com/node:1"}]' > imagedefinitions.json
 artifacts:
      files: imagedefinitions.json
