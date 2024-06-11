@@ -15,7 +15,7 @@ phases:
   build:
     commands:
       - echo "sucess login"
-      - docker build -t weather .
+      - docker build -t node .
       - echo "Happly build the dockerfile"
       - docker tag node:latest 871724687805.dkr.ecr.ap-northeast-3.amazonaws.com/node:latest
       - ls -la
@@ -23,7 +23,7 @@ phases:
      commands:
        - echo "Enter post_build"
        - echo build start on  `date`
-       - docker push 871724687805.dkr.ecr.ap-south-1.amazonaws.com/weather:latest
+       - docker push 871724687805.dkr.ecr.ap-south-1.amazonaws.com/node:latest
        - echo Writing image definition file..
        - printf '[{"name":"projectk","imageUri":"871724687805.dkr.ecr.ap-northeast-3.amazonaws.com/node:latest"}]' > imagedefinitions.json
 artifacts:
