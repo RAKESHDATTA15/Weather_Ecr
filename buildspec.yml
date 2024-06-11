@@ -11,13 +11,13 @@ phases:
       - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - docker pull node:14
       - echo "Sucess docker login && pull node"
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 871724687805.dkr.ecr.ap-south-1.amazonaws.com
+      - aws ecr get-login-password --region ap-northeast-3 | docker login --username AWS --password-stdin 871724687805.dkr.ecr.ap-northeast-3.amazonaws.com
   build:
     commands:
       - echo "sucess login"
       - docker build -t weather .
       - echo "Happly build the dockerfile"
-      - docker tag weather:latest 871724687805.dkr.ecr.ap-south-1.amazonaws.com/weather:latest
+      - docker tag node:latest 871724687805.dkr.ecr.ap-northeast-3.amazonaws.com/node:latest
       - ls -la
   post_build:
      commands:
@@ -25,6 +25,6 @@ phases:
        - echo build start on  `date`
        - docker push 871724687805.dkr.ecr.ap-south-1.amazonaws.com/weather:latest
        - echo Writing image definition file..
-       - printf '[{"name":"projectk","imageUri":"871724687805.dkr.ecr.ap-south-1.amazonaws.com/weather:latest"}]' > imagedefinitions.json
+       - printf '[{"name":"projectk","imageUri":"871724687805.dkr.ecr.ap-northeast-3.amazonaws.com/node:latest"}]' > imagedefinitions.json
 artifacts:
      files: imagedefinitions.json
