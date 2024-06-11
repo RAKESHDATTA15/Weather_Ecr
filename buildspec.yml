@@ -15,7 +15,7 @@ phases:
   build:
     commands:
       - echo "sucess login"
-      - version=$(date +%Y%m%d%H%M%S)
+      - version=$(date +%Y%m%d%H%M)
       - docker build -t node:$version .
       - echo "Happly build the dockerfile"
       - docker tag node:$version 871724687805.dkr.ecr.ap-northeast-3.amazonaws.com/node:$version
